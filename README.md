@@ -84,6 +84,8 @@ conda run -n research python -c "import fitz, pdfplumber, pymupdf4llm, docx, mam
 | 抽取來源論文正文 | 「把 `drafts/` 的 PDF／Word 抽成 `Manuscript.md`」 | `source-document-extraction` |
 | 引用一致性／補書目 | 「檢查引用一致性」「用 Semantic Scholar 補齊書目」 | `citation-reference-management` |
 | 查證引用／補引證 | 「這句的引用對不對」「幫這段找引用」「這篇文獻有沒有講這個」 | `citation-source-verification`（只依 `working-papers/<論文>/papers/` 的原文；沒有原文會先請你提供） |
+| 彙整待辦 | 「彙整待辦」「更新 todo」「看還有哪些沒處理」 | `todo-consolidation`（更新該篇 `todo.md`，歷程記在 `progress.md`） |
+| 流程提醒 | 「開工前檢查一下」「改這段前要注意什麼」「這章收尾檢查」「投稿前檢查」 | `editing-assistant` Agent（只讀，回報待處理、連動與待結案事項） |
 | 定稿前掃描 | 「定稿前掃一遍」「全文一致性檢查」「校對一下」 | `final-consistency-sweep`（出清單，不自行大改） |
 | 匯出 Word | 「匯出成 Word」「套期刊樣式轉 `.docx`」 | `markdown-to-word` |
 | **同步 Word 改動回稿件** | 「把我在 Word 改的同步回來」「比對這份 `.docx` 與 `Introduction.md`」 | `docx-manuscript-sync`（會**先跟你確認是哪兩個檔**，再逐塊比對、由你裁定合併，可回退） |
@@ -96,7 +98,9 @@ conda run -n research python -c "import fitz, pdfplumber, pymupdf4llm, docx, mam
 ```
 ├── CLAUDE.md              # AI 主指引（跨所有論文）
 ├── docs/                  # SETUP.md（環境）、NEW-PAPER.md（開新論文）
-├── .claude/skills/        # 10 個編修 skill（共用）
+├── .claude/skills/        # 12 個編修 skill（共用）
+├── .claude/agents/        # editing-assistant：只讀的流程提醒 Agent
+├── .claude/hooks/         # session 開始、改章節檔後的提醒腳本
 ├── writing-style/           # 【共用】三個風格區塊
 │   ├── style-defaults.md    #   通用預設（可編輯範本，進版控）
 │   ├── personal-voice/      #   個人筆法：sources/＋personal-voice.md（git-ignored 私人；僅 README 進版控）

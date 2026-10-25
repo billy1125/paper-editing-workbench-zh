@@ -88,6 +88,23 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 | `markdown-to-word` | 用 Pandoc 把章節檔轉 `.docx`，可套期刊樣式 |
 | `docx-manuscript-sync` | 使用者在別的軟體（Word）改過的 `.docx` 與對應章節檔段落級比對，逐塊呈現差異與建議、由使用者裁定合併回 md（留底），選配重匯 Word（需 `research` 環境；**不預設 docx 為準**） |
 | `final-consistency-sweep` | 定稿／匯出前全文一致性掃描（術語與譯名／用語用字／標點與全半形／數字／引用），出清單再用 `passage-revision` 落實 |
+| `todo-consolidation` | 把各章的待補事項、工作筆記、編修紀錄、文內標記與 `revisions/` 的「⚠️ 觀察」彙整成該篇 `todo.md`（作者需要處理的唯一清單），之後增量更新、編號不重排；更新歷程記在 `progress.md`，不在 `revisions/` 留底 |
+
+### Agent 與 hooks
+
+`.claude/agents/editing-assistant.md` 是**只讀不寫**的流程提醒 Agent（工具只有 Read／Grep／Glob），在下列時間點由主對話呼叫，回報「動手前必須處理／連動提醒／待結案／建議 skill」四區。它不改檔、不取代上表的 skill；結果由主對話轉述給使用者。
+
+| 時間點 | 何時呼叫 |
+|---|---|
+| A | session 第一次動手、或切換到另一篇（§5 step 0） |
+| B | 動手改某段前（§5 step 2） |
+| C | 採用版本、替換回章節檔之後（§5 step 5） |
+| D | 一章告一段落 |
+| E | 投稿前，接著跑 `final-consistency-sweep`、`markdown-to-word` |
+
+`.claude/settings.json` 設了兩個 hook，只插入提醒文字、不會自己執行 Agent：SessionStart 提醒呼叫時間點 A；PostToolUse（Edit／Write）在改到該篇 `Basic Information.md` 的 `chapters` 所列章節檔時提醒呼叫時間點 C。腳本在 `.claude/hooks/`。
+
+每篇另有 `consistency-map.md`（連動對照表），記錄全文共用的事實（構面清單、假設編號、模型設定、樣本數、用詞決定）與出現位置，Agent 在時間點 B、D 據此比對。首版由主對話依各章現況草擬、作者逐列確認；「目前定案」欄只由作者決定。
 
 ### 外部（可攜）skill —— 勿任意修改
 
@@ -133,14 +150,17 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
    2. 讀該篇 `Basic Information.md` 的 `chapters` 與 `progress.md`，確認章節檔清單、各章狀態與待辦。
    3. 掃最近 2–3 個該篇 `revisions/`，掌握最近決策與尚未處理的「⚠️ 觀察」。
    4. 輸出一行確認再開始，例如：`已載入 <title>：style-guide（§9 規則 N 條）＋progress＋近 3 筆 revisions`。
+   5. 呼叫 `editing-assistant`（時間點 A），轉述它回報的未結案事項與 `todo.md`／`consistency-map.md` 狀態。
    （不確定使用者指的是哪一篇時，先問一句，見 §7、本檔開頭「作用中論文」說明。）
 1. **確認範圍與方向**：使用者指出哪個章節檔的哪一部分要改，以及方向（更流程/更正式／更簡潔／更強調貢獻／更口語等，可能同時有兩個以上的方向）。方向不明時，先問一句再動手。
-2. **動手前先重讀 live 文字**：以該章節檔**當下內容**為準再產生建議或下 Edit。使用者常在回合之間自行手改稿件（採用某版後再微調、或改回別的措辭），`revisions/` 的快照可能落後於 live；**務必先 Read 目標段落、確認 old_string 對得上**，不要拿舊文字直接替換。
+2. **動手前先重讀 live 文字**：以該章節檔**當下內容**為準再產生建議或下 Edit。使用者常在回合之間自行手改稿件（採用某版後再微調、或改回別的措辭），`revisions/` 的快照可能落後於 live；**務必先 Read 目標段落、確認 old_string 對得上**，不要拿舊文字直接替換。產生建議前呼叫 `editing-assistant`（時間點 B），把該段的標記、未結案 ⚠️ 與連動位置告訴使用者。
 3. **產生建議**：
    - 單段 → 用 `passage-revision`，給 ≤5 版本。**基本原則：一律多版本（≥2）＋附一句「我的建議」，不得因連續／批次／逐段而退成單一版；見該 skill 產出規則。**
    - 一個範圍的整體彙整 → 用 `section-review`，給方向選項（此 skill 給「方向」不給逐段版本；要版本回到 `passage-revision`）。
 4. **使用者挑選或微調**：使用者指定採用哪一版（或要求再改）。
-5. **替換並更新進度**：將選定版本替換回該篇**對應章節檔**的對應位置，在該篇 `revisions/` 依下方「編修歷程紀錄格式」存一筆（確保可回退），並更新該篇 `progress.md` 對應節狀態。
+5. **替換並更新進度**：將選定版本替換回該篇**對應章節檔**的對應位置，在該篇 `revisions/` 依下方「編修歷程紀錄格式」存一筆（確保可回退），並更新該篇 `progress.md` 對應節狀態。完成後呼叫 `editing-assistant`（時間點 C）檢查留底、進度、查證結果表、書目與 `todo.md`；有新的 ⚠️ 時用 `todo-consolidation` 更新 `todo.md`。
+
+一章告一段落時呼叫 `editing-assistant`（時間點 D）；投稿前呼叫時間點 E。
 
 ### 編修歷程紀錄格式（`working-papers/<title>/revisions/`）
 
@@ -171,8 +191,10 @@ Paperforger-ZH/
 ├── CLAUDE.md                 # 本檔，專案主指引（跨所有論文）
 ├── response-guide.md         # 回應指引（對話回覆的寫法；可編輯範本，由本檔匯入）
 ├── docs/                     # SETUP.md（環境需求與 pandoc 疑難排解，見 §8）、NEW-PAPER.md（開新論文流程）
-├── .claude/skills/           # 11 個編修 skill（跨論文共用，各含 SKILL.md）
+├── .claude/skills/           # 12 個編修 skill（跨論文共用，各含 SKILL.md）
 │                             #   其中 source-document-extraction 為 🔗 外部可攜 skill，勿任意修改（見 §4）
+├── .claude/agents/           # editing-assistant.md：只讀的流程提醒 Agent（見 §4「Agent 與 hooks」）
+├── .claude/hooks/            # SessionStart、PostToolUse 提醒腳本，由 .claude/settings.json 掛載
 ├── writing-style/            # 【跨論文共用】風格素材（三區塊）
 │   ├── style-defaults.md         #   通用預設（可編輯範本；見 §0；進版控）
 │   ├── personal-voice/           #   個人筆法：sources/（放自己文章）＋ personal-voice.md 摘要
@@ -185,6 +207,7 @@ Paperforger-ZH/
     └── <title>/              #   git-ignored 私人；各大章節檔（Introduction.md 等，清單見
                               #   Basic Information.md 的 chapters）、Manuscript.md（過去手稿集中檔）、
                               #   Basic Information.md、progress.md、reference.md、style-guide.md、
+                              #   todo.md（待辦清單）、consistency-map.md（連動對照表）、
                               #   target-journal-samples/、drafts/、revisions/、
                               #   papers/（參考文獻原文，內分 pdf/、md/，供 citation-source-verification 查證；不編修）
 ```
