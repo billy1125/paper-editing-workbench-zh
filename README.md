@@ -3,7 +3,7 @@
 > 以 **Claude Code** 驅動的**資訊管理（IS／MIS）學術論文中文編修**工作台 — A **Claude Code–powered copy-editing workbench** for **Chinese-language Information Systems (IS/MIS) academic manuscripts**. 逐段多版本潤稿、風格對齊目標期刊、引用查證，**只改中文文字、不動研究主張**。
 
 ![Claude Code](https://img.shields.io/badge/Claude%20Code-Skills-8A2BE2)
-![Skills](https://img.shields.io/badge/Skills-10-1857B6)
+![Skills](https://img.shields.io/badge/Skills-12-1857B6)
 ![Semantic Scholar](https://img.shields.io/badge/Semantic%20Scholar-MCP-1857B6)
 ![License: MIT](https://img.shields.io/badge/License-MIT-2E9E4F)
 ![Language](https://img.shields.io/badge/稿件語言-繁體中文-2E9E4F)
@@ -44,12 +44,42 @@ Paperforger-ZH helps Information Systems (IS/MIS) researchers bring the **Chines
 | `academic-principles-calibration` | 從你蒐集／整理的學術中文原則文件萃取共用規則摘要 |
 | `passage-revision` | 逐段中文校修，多版本供挑選（最常用） |
 | `section-review` | 一個範圍的整體彙整審閱，給修改方向 |
+| `argument-review` | 檢查論證邏輯、研究缺口與研究模型的一致性，產出修訂稿（不查證引用） |
 | `source-document-extraction` | 從 `drafts/` 的 PDF／Word 抽出文字，集中到過去手稿的集中檔 `Manuscript.md` |
 | `citation-reference-management` | 引用一致性檢查、Semantic Scholar 查證補齊書目 |
 | `citation-source-verification` | 依 `working-papers/<論文>/papers/` 內的參考文獻原文，查證選定字句的引用是否與原文相符，確認後加入引用並在檔案結尾記下原文頁碼／段落（需要你提供原文） |
 | `markdown-to-word` | 用 Pandoc 把章節檔匯出為 `.docx` |
 | `docx-manuscript-sync` | 把在 Word 改過的 `.docx` 與對應章節檔段落級比對，逐塊裁定後合併回稿件（先確認兩方檔案、可回退） |
 | `final-consistency-sweep` | 定稿／匯出前的全文一致性與校對掃描 |
+| `todo-consolidation` | 把各章的待補事項、工作筆記、文內標記與 `revisions/` 的 ⚠️ 觀察彙整成該篇 `todo.md`，之後增量更新 |
+
+## 🤖 內建 Agent 與 Hooks / Agent & Hooks
+
+### `editing-assistant`：流程提醒 Agent
+
+`editing-assistant`（`.claude/agents/editing-assistant.md`）是**只讀不寫**的檢查員，工具只有 Read、Grep、Glob。它在固定時間點讀作用中論文的檔案，回報該注意的事，**不改任何檔案、不替你做決定**，也不取代上面的 skill。真正動手改稿仍由主對話執行對應的 skill。
+
+| 時間點 | 何時用 | 檢查什麼 | 你可以這樣說 |
+|---|---|---|---|
+| A 開工 | session 第一次動手、切換到另一篇 | `style-guide.md` 的專屬規則、`chapters` 所列章節檔是否存在、`progress.md`、`todo.md` 未解決項、近 3 筆 `revisions/` 的 ⚠️、`todo.md` 是否過時 | 「開工前檢查一下」 |
+| B 改段前 | 動手改某段之前 | 段落內的文內標記、`revisions/` 中這段的 ⚠️、`todo.md` 中落在這段的項目、`consistency-map.md` 記錄的跨章連動 | 「改這段前要注意什麼」 |
+| C 採用後 | 採用版本、替換回章節檔之後 | 有沒有留底、`progress.md` 有沒有更新、查證結果表的文句是否還在正文、引用是否都在參考文獻與 `reference.md` | 「這段替換完了，幫我檢查」 |
+| D 章節收尾 | 一章告一段落 | 依 `consistency-map.md` 逐列比對各章寫法、統計文內標記、列出不納入投稿正文的節 | 「這章收尾檢查」 |
+| E 投稿前 | 匯出投稿版之前 | 匿名化（作者自引與作者資訊）、全文剩餘標記、不納入投稿正文的節、摘要與題目的待辦、投稿前處理與待決定事項 | 「投稿前檢查」 |
+
+回報固定分成四區：**動手前必須處理**、**連動提醒**、**待結案**、**建議 skill**。每項附檔名與行號，每區最多 5 項，找不到依據的不寫。
+
+### Hooks：自動提醒
+
+`.claude/settings.json` 掛了兩個 hook（腳本在 `.claude/hooks/`），**只插入提醒文字，不會自己執行 Agent**：
+
+- **SessionStart**：每次開 session 時，提醒先確認作用中論文，再呼叫時間點 A。
+- **PostToolUse（Edit／Write）**：改到該篇 `Basic Information.md` 的 `chapters` 所列章節檔時，提醒呼叫時間點 C。`_TEMPLATE/` 與章節檔以外的檔案不觸發。
+
+### 搭配的工作檔
+
+- **`todo.md`**：該篇的待辦清單，由 `todo-consolidation` 彙整與更新。Agent 讀它來列出未解決項目。
+- **`consistency-map.md`**：連動對照表，記錄全文共用的事實（構面清單、假設編號、模型設定、樣本數、用詞決定）與出現位置。Agent 在時間點 B、D 據此比對。首版由主對話依各章現況草擬，「目前定案」欄只由作者決定。
 
 ## 🔧 環境需求 / Requirements
 
