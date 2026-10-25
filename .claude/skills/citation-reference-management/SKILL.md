@@ -1,20 +1,20 @@
 ---
 name: citation-reference-management
-description: 管理 references.md 與 Manuscript.md 的引用一致性，並用 Semantic Scholar 查證補齊待補書目。當需要檢查孤兒引用／未被引用書目／待補清單、用真實資料庫查證並補齊 APA 書目、從 source PDF 重建參考清單、或定稿前產生 References 章節時使用。在 research conda 環境執行內附腳本，輸出 UTF-8 報告。
+description: 管理 reference.md 與 Manuscript.md 的引用一致性，並用 Semantic Scholar 查證補齊待補書目。當需要檢查孤兒引用／未被引用書目／待補清單、用真實資料庫查證並補齊 APA 書目、從 source PDF 重建參考清單、或定稿前產生 References 章節時使用。在 research conda 環境執行內附腳本，輸出 UTF-8 報告。
 ---
 
 # 引用與參考文獻管理
 
-管理單一書目來源 `references.md` 與 `Manuscript.md` 正文引用的一致性，並提供以 **Semantic Scholar** 查證真實書目、補齊 APA 7th 條目的能力。
+管理單一書目來源 `reference.md` 與 `Manuscript.md` 正文引用的一致性，並提供以 **Semantic Scholar** 查證真實書目、補齊 APA 7th 條目的能力。
 
 > **核心鐵則（承襲 paper-search）：所有補入的書目一律來自 Semantic Scholar 實際回傳，絕不憑記憶捏造標題、作者、年份、期刊或引用數。** 工具不可用時引導使用者排查環境，而非臆造書目。
 
 ## 何時使用本技能
 
-- 檢查正文引用與 `references.md` 是否一致（孤兒引用／未被引用／待補）。
-- 補齊 `references.md` 中的 `*[ 待補 ]*` 佔位條目。
+- 檢查正文引用與 `reference.md` 是否一致（孤兒引用／未被引用／待補）。
+- 補齊 `reference.md` 中的 `*[ 待補 ]*` 佔位條目。
 - 從 `working-papers/<paper>/drafts/Manuscript.pdf` 參考清單頁的內容重建書目。
-- 稿件定稿前，從 `references.md` 產生稿件 References 章節。
+- 稿件定稿前，從 `reference.md` 產生稿件 References 章節。
 
 ## 環境需求
 
@@ -42,14 +42,14 @@ conda create -n research python=3.11 -y       # 環境不存在時先建立；ch
 1. 取工作流程 a 的 **③ 待補清單**，逐筆以「作者 + 年份 + 題名關鍵詞」查 Semantic Scholar MCP。
 2. 從 MCP 回傳挑出正確命中（**逐筆核對 title／authors／venue／year**，命中存疑時擱置回報，不得臆造）。
 3. 轉為 APA 7th 條目（作者姓氏排序、斜體期刊名、卷期頁、DOI）。
-4. 回報主線，由主線寫入 `references.md` 取代佔位——**本技能不直接改 `references.md`**，以符合 CLAUDE.md「補書目 → 確認 → 寫入」流程與稽核獨立原則。
+4. 回報主線，由主線寫入 `reference.md` 取代佔位——**本技能不直接改 `reference.md`**，以符合 CLAUDE.md「補書目 → 確認 → 寫入」流程與稽核獨立原則。
 
 ### 工作流程 c：從 PDF 第 27–28 頁重建清單
 
 1. 以 `Skill` 工具呼叫 **`source-document-extraction`**，抽 `working-papers/<paper>/drafts/Manuscript.pdf` 參考清單所在頁（如 `--pages 27-28`）——不重複 PDF 抽取邏輯，一律委派該技能。
 2. Read 抽出的參考清單文字，對照工作流程 a 的 ①③ 結果，確認本稿實際引用的條目。
 3. 逐條以 Semantic Scholar 查證 venue／DOI，組為 APA 7th。
-4. 回報主線重建 `references.md`（取代與本稿不符的舊 FinTech「待補」清單）。
+4. 回報主線重建 `reference.md`（取代與本稿不符的舊 FinTech「待補」清單）。
 
 ## MCP 設定（Semantic Scholar）
 
@@ -87,8 +87,8 @@ conda create -n research python=3.11 -y       # 環境不存在時先建立；ch
 ## 指令範例
 
 ```bash
-# 一致性檢查：比對正文引用 ↔ references.md，輸出四類報告
-conda run -n research python .claude/skills/citation-reference-management/scripts/check_citations.py working-papers/<paper>/Manuscript.md working-papers/<paper>/references.md -o citation_report.md
+# 一致性檢查：比對正文引用 ↔ reference.md，輸出四類報告
+conda run -n research python .claude/skills/citation-reference-management/scripts/check_citations.py working-papers/<paper>/Manuscript.md working-papers/<paper>/reference.md -o citation_report.md
 
 # 重建清單前：抽 PDF 第 27–28 頁參考清單（委派 source-document-extraction）
 conda run -n research python .claude/skills/source-document-extraction/scripts/extract_pdf.py working-papers/<paper>/drafts/Manuscript.pdf --pages 27-28 -o refs_pdf.txt
@@ -96,4 +96,4 @@ conda run -n research python .claude/skills/source-document-extraction/scripts/e
 
 ## 內附檔案
 
-- `scripts/check_citations.py` —— 比對 `Manuscript.md` 正文引用與 `references.md` 書目；解析括號並列式與敘述式引用、區分完整／待補條目；輸出四類報告（① 孤兒引用、② 未被引用書目、③ 待補優先清單、④ 年份疑慮）。輸出 UTF-8 檔。
+- `scripts/check_citations.py` —— 比對 `Manuscript.md` 正文引用與 `reference.md` 書目；解析括號並列式與敘述式引用、區分完整／待補條目；輸出四類報告（① 孤兒引用、② 未被引用書目、③ 待補優先清單、④ 年份疑慮）。輸出 UTF-8 檔。

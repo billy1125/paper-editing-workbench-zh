@@ -10,7 +10,7 @@
 cp -r working-papers/_TEMPLATE working-papers/<your-paper-slug>
 ```
 
-骨架已含六個大章節檔（`Introduction.md`、`Literature Review.md`、`Research Method.md`、`Data Analysis.md`、`Results.md`、`Discussion and Conclusion.md`，清單設定在 `Basic Information.md` 的 `chapters`）、過去手稿的集中檔 `Manuscript.md`，以及 `Basic Information.md`、`progress.md`、`references.md`、`style-guide.md`，以及 `drafts/`、`target-journal-samples/`、`revisions/`、`papers/` 子夾。這篇的參考文獻原文放在該夾的 `papers/`（內分 `pdf/`、`md/`）。完整首次設定步驟見 [`../docs/NEW-PAPER.md`](../docs/NEW-PAPER.md)。
+骨架已含六個大章節檔（`Introduction.md`、`Literature Review.md`、`Research Method.md`、`Data Analysis.md`、`Results.md`、`Discussion and Conclusion.md`，清單設定在 `Basic Information.md` 的 `chapters`）、過去手稿的集中檔 `Manuscript.md`，以及 `Basic Information.md`、`progress.md`、`reference.md`、`style-guide.md`，以及 `drafts/`、`target-journal-samples/`、`revisions/`、`papers/` 子夾。這篇的參考文獻原文放在該夾的 `papers/`（內分 `pdf/`、`md/`）。完整首次設定步驟見 [`../docs/NEW-PAPER.md`](../docs/NEW-PAPER.md)。
 
 ## 作用中論文（active paper）
 

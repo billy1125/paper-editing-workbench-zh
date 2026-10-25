@@ -104,7 +104,7 @@ conda run -n research python -c "import fitz, pdfplumber, pymupdf4llm, docx, mam
 └── working-papers/
     ├── README.md         # 工作區說明（進版控）
     ├── _TEMPLATE/         # 新論文骨架，複製改名即可（進版控）
-    └── <每篇一夾>/         # 你的論文（git-ignored 私人）：各大章節檔、Manuscript.md（過去手稿集中檔）、references.md、papers/（參考文獻原文，內分 pdf/、md/）…
+    └── <每篇一夾>/         # 你的論文（git-ignored 私人）：各大章節檔、Manuscript.md（過去手稿集中檔）、reference.md、papers/（參考文獻原文，內分 pdf/、md/）…
 ```
 
 ## 📄 授權 / License

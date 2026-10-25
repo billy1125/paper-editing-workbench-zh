@@ -1,18 +1,18 @@
-"""比對 Manuscript.md 正文引用與 references.md 書目的一致性。
+"""比對 Manuscript.md 正文引用與 reference.md 書目的一致性。
 
 需在 conda 環境 `research` 下執行（本腳本只用標準庫，免額外套件）。
 因 Windows 終端 cp950 編碼與 `conda run -c` 不支援多行/中文輸出，
 本腳本一律將報告寫入 UTF-8 檔案，再由 Read 工具讀取，避免編碼錯誤。
 
 產出四類報告：
-  ① 孤兒引用    —— 正文引用，但 references.md 無對應條目（最高優先）
-  ② 未被引用書目 —— references.md 有條目，但正文未引用
-  ③ 待補（被引用）—— 正文有引用且 references.md 仍為「待補」佔位（交查證補齊）
+  ① 孤兒引用    —— 正文引用，但 reference.md 無對應條目（最高優先）
+  ② 未被引用書目 —— reference.md 有條目，但正文未引用
+  ③ 待補（被引用）—— 正文有引用且 reference.md 仍為「待補」佔位（交查證補齊）
   ④ 年份疑慮    —— 同姓氏但年份相差 ≤1 的可疑配對（如 Glover & Benbasat 2010/2011）
 
 用法範例：
     conda run -n research python .claude/skills/citation-reference-management/scripts/check_citations.py \
-        Manuscript.md references.md -o citation_report.md
+        Manuscript.md reference.md -o citation_report.md
 """
 import argparse
 import re
@@ -34,7 +34,7 @@ NARRATIVE = re.compile(
     r"\((?P<years>(?:19|20)\d{2}[a-z]?(?:\s*,\s*(?:19|20)\d{2}[a-z]?)*)\)"
 )
 
-# --- references.md 條目 ---
+# --- reference.md 條目 ---
 PLACEHOLDER = re.compile(r"\*\[\s*待補\s*\]\*")
 REF_HEAD = re.compile(r"^(?P<authors>[A-ZÀ-Ý].+?)\s*\((?P<year>(?:19|20)\d{2}[a-z]?)\)")
 REF_BULLET = re.compile(r"^-\s*(?P<authors>[A-Z].+?)\s*\((?P<year>(?:19|20)\d{2})[^)]*\)")
@@ -191,7 +191,7 @@ def build_report(cites, complete, pending, meta, by_surname, tol, paths) -> str:
         f"待補 {len(pending)}\n"
     )
 
-    out.append("## ① 孤兒引用（正文有，references.md 無對應條目）｜最高優先\n")
+    out.append("## ① 孤兒引用（正文有，reference.md 無對應條目）｜最高優先\n")
     if orphans:
         for key in sorted(orphans):
             out.append(f"- {disp(key)}")
@@ -199,7 +199,7 @@ def build_report(cites, complete, pending, meta, by_surname, tol, paths) -> str:
         out.append("（無）")
     out.append("")
 
-    out.append("## ② 未被引用的書目（references.md 有，正文未引用）\n")
+    out.append("## ② 未被引用的書目（reference.md 有，正文未引用）\n")
     if uncited:
         for key in sorted(uncited):
             status = "待補" if key in pending else "完整"
@@ -233,7 +233,7 @@ def main() -> None:
         description="比對正文引用與書目一致性（輸出 UTF-8 報告）"
     )
     ap.add_argument("manuscript", help="稿件路徑，例如 Manuscript.md")
-    ap.add_argument("references", help="書目路徑，例如 references.md")
+    ap.add_argument("references", help="書目路徑，例如 reference.md")
     ap.add_argument("-o", "--out", required=True, help="輸出報告路徑（UTF-8）")
     ap.add_argument("--year-tolerance", type=int, default=0,
                     help="年份疑慮的額外容差（預設 0，即比對相差 ≤1）")

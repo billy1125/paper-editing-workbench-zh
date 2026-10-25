@@ -10,7 +10,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 > **這不是程式碼專案**：本 repo 沒有 build／test／lint 流程，也沒有應用程式可執行。工作產物是各大章節的 Markdown 章節檔與 `revisions/` 留底；唯一的「指令」是 §8 的 conda／Pandoc 環境驗證與各 skill 內附的抽取／轉檔腳本。請勿去找不存在的測試或建置指令。查證引用透過 `.mcp.json` 設定的 **Semantic Scholar MCP server**（工具前綴 `mcp__semantic-scholar__*`），見 §4。
 
-> **作用中論文（active paper）**：所有編修工作檔——各大章節檔、`Manuscript.md`、`Basic Information.md`、`progress.md`、`references.md`、`drafts/`、`revisions/`、`target-journal-samples/`、`style-guide.md`——都位於**某一篇論文的資料夾 `working-papers/<title>/` 內**。動手前先確認正在編修哪一篇；不明確時先問一句。本檔與各 skill 提到這些檔名時，除非另有標明，一律指**作用中論文資料夾內**的同名檔。**編修以大章節檔為工作檔**：章節清單與檔名由作者設定在該篇 `Basic Information.md` 的 `chapters`；`Manuscript.md` 是過去所有手稿的集中檔，只作素材與對照來源，不是編修工作檔（見 §5）。跨論文共用的是根目錄 `writing-style/`，內含三個各自獨立、可分別調整的區塊：**個人筆法** `personal-voice/`、**學術中文原則** `academic-principles/`、**通用預設** `style-defaults.md`（見 §3）。另外，各篇資料夾內的 `papers/`（`working-papers/<title>/papers/`）是使用者存放該篇**參考文獻**原文的地方，內分 `pdf/`、`md/`，只供查證、不編修。
+> **作用中論文（active paper）**：所有編修工作檔——各大章節檔、`Manuscript.md`、`Basic Information.md`、`progress.md`、`reference.md`、`drafts/`、`revisions/`、`target-journal-samples/`、`style-guide.md`——都位於**某一篇論文的資料夾 `working-papers/<title>/` 內**。動手前先確認正在編修哪一篇；不明確時先問一句。本檔與各 skill 提到這些檔名時，除非另有標明，一律指**作用中論文資料夾內**的同名檔。**編修以大章節檔為工作檔**：章節清單與檔名由作者設定在該篇 `Basic Information.md` 的 `chapters`；`Manuscript.md` 是過去所有手稿的集中檔，只作素材與對照來源，不是編修工作檔（見 §5）。跨論文共用的是根目錄 `writing-style/`，內含三個各自獨立、可分別調整的區塊：**個人筆法** `personal-voice/`、**學術中文原則** `academic-principles/`、**通用預設** `style-defaults.md`（見 §3）。另外，各篇資料夾內的 `papers/`（`working-papers/<title>/papers/`）是使用者存放該篇**參考文獻**原文的地方，內分 `pdf/`、`md/`，只供查證、不編修。
 
 ---
 
@@ -83,7 +83,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 | Skill | 一句話用途 |
 |---|---|
 | `source-document-extraction` — **🔗 外部** | 把該篇 `drafts/` 的 `.docx`／`.pdf` 正文抽成 `Manuscript.md`（需 `research` 環境） |
-| `citation-reference-management` | 以 `references.md` 為準查引用一致性，用 **Semantic Scholar MCP**（`.mcp.json`，工具前綴 `mcp__semantic-scholar__*`）查證補齊 APA 書目（需 `research` 環境） |
+| `citation-reference-management` | 以 `reference.md` 為準查引用一致性，用 **Semantic Scholar MCP**（`.mcp.json`，工具前綴 `mcp__semantic-scholar__*`）查證補齊 APA 書目（需 `research` 環境） |
 | `citation-source-verification` | 針對選定字句，到 `working-papers/<title>/papers/` 的參考文獻原文查證引用是否與原文相符；使用者確認後加入引用，並在被編輯檔案結尾維護附原文頁碼／段落的參考文獻清單。文內用三種工作標記：`[Verified]`（使用者判斷引用成立）、`[No Reference]`（文獻庫缺原文、尚未查證）、`[Need Reference]`（使用者判斷不成立並移除引用，待補）。**沒有原文就先請使用者提供，不憑記憶引用** |
 | `markdown-to-word` | 用 Pandoc 把章節檔轉 `.docx`，可套期刊樣式 |
 | `docx-manuscript-sync` | 使用者在別的軟體（Word）改過的 `.docx` 與對應章節檔段落級比對，逐塊呈現差異與建議、由使用者裁定合併回 md（留底），選配重匯 Word（需 `research` 環境；**不預設 docx 為準**） |
@@ -184,7 +184,7 @@ Paperforger-ZH/
     ├── _TEMPLATE/            #   範本骨架：開新論文複製此夾改名（進版控，含 revisions/_format.md）
     └── <title>/              #   git-ignored 私人；各大章節檔（Introduction.md 等，清單見
                               #   Basic Information.md 的 chapters）、Manuscript.md（過去手稿集中檔）、
-                              #   Basic Information.md、progress.md、references.md、style-guide.md、
+                              #   Basic Information.md、progress.md、reference.md、style-guide.md、
                               #   target-journal-samples/、drafts/、revisions/、
                               #   papers/（參考文獻原文，內分 pdf/、md/，供 citation-source-verification 查證；不編修）
 ```

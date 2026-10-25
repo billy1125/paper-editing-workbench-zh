@@ -2,7 +2,7 @@
 
 本檔是 `CLAUDE.md` §5 抽出的**開新論文一次性流程**，只有「新增一篇論文」時才需要；日常編修循環見 CLAUDE.md §5。（給人看的簡版另見 `README.md`「開一篇新論文」。）
 
-1. **建立論文資料夾**：複製範本骨架 `working-papers/_TEMPLATE/` 為 `working-papers/<title>/`（`<title>` 用簡短 kebab-case slug，如 `working-papers/technological-trust-recommendation-systems`）。骨架已含六個大章節檔、過去手稿的集中檔 `Manuscript.md`、`Basic Information.md`、`progress.md`、`references.md`、`style-guide.md` 與 `drafts/`、`target-journal-samples/`、`revisions/`、`papers/` 子夾。之後這篇的所有工作檔都放在此夾內。先填 `Basic Information.md`（含目標期刊），並**由作者在其中的 `chapters` 設定大章節**：範本建議的大綱是 `Introduction.md`、`Literature Review.md`、`Research Method.md`、`Data Analysis.md`、`Results.md`、`Discussion and Conclusion.md`，可依實際大綱增刪、改名，清單與資料夾內的檔名要一致。日常編修以這些章節檔為工作檔。這篇的參考文獻原文放在本夾的 `papers/`，內分 `pdf/`、`md/` 兩個資料夾。
+1. **建立論文資料夾**：複製範本骨架 `working-papers/_TEMPLATE/` 為 `working-papers/<title>/`（`<title>` 用簡短 kebab-case slug，如 `working-papers/technological-trust-recommendation-systems`）。骨架已含六個大章節檔、過去手稿的集中檔 `Manuscript.md`、`Basic Information.md`、`progress.md`、`reference.md`、`style-guide.md` 與 `drafts/`、`target-journal-samples/`、`revisions/`、`papers/` 子夾。之後這篇的所有工作檔都放在此夾內。先填 `Basic Information.md`（含目標期刊），並**由作者在其中的 `chapters` 設定大章節**：範本建議的大綱是 `Introduction.md`、`Literature Review.md`、`Research Method.md`、`Data Analysis.md`、`Results.md`、`Discussion and Conclusion.md`，可依實際大綱增刪、改名，清單與資料夾內的檔名要一致。日常編修以這些章節檔為工作檔。這篇的參考文獻原文放在本夾的 `papers/`，內分 `pdf/`、`md/` 兩個資料夾。
 2. **放入來源文件**：使用者把原始論文（`.docx`、`.pdf` 等）放在 `working-papers/<title>/drafts/`（例如 `working-papers/<title>/drafts/Manuscript.docx`）。
 3. **抽取正文成 Markdown**：用 `source-document-extraction` skill 把正文截取出來，存成**該篇的 `working-papers/<title>/Manuscript.md`**。這是這篇**過去所有手稿的集中檔**，供撰寫與編修章節檔時取材、對照，不是編修工作檔。
    - 範例指令（以現有論文為例）：
