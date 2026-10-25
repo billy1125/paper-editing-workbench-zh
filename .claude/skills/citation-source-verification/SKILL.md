@@ -39,7 +39,7 @@ description: 針對使用者選定的字句或段落，到 working-papers/<title
 
    標準說法：
    > 這項查證需要參考文獻的原文，我只會依原文內容引用，不會憑記憶補。請把這篇的原文放進 `working-papers/<title>/papers/pdf/`（PDF）或 `working-papers/<title>/papers/md/`（Markdown），放好後再告訴我。目前缺的是：＜列出缺少的文獻＞。
-4. 讀該篇 `style-guide.md`（不存在時用 `writing-style/style-defaults.md`），確認文內引用與書目的格式。
+4. 讀該篇 `style-guide.md`（不存在時用 `writing-style/personal-writing-style.md`），確認文內引用與書目的格式。
 
 ## 讀原文的方式
 

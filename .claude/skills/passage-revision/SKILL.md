@@ -9,7 +9,7 @@ description: 對使用者指定的一段中文學術文字進行校修，依作�
 
 ## 開始前
 
-1. 確認已讀 `working-papers/<paper>/style-guide.md`（若不存在，提醒可先做 `personal-voice-calibration`，但仍可用 `writing-style/style-defaults.md` 的預設基準先行）。
+1. 確認已讀 `working-papers/<paper>/style-guide.md`（若不存在或空白，依 `writing-style/personal-writing-style.md`）。
 2. 確認**修改方向**。使用者若已說明（更正式／更簡潔／更強調貢獻／語氣更中性等），照辦；**若未說明，先用一句話問清楚再動手**，不要自行假設。
 3. 確認範圍：到底改哪幾句，避免擴張到使用者沒指定的部分。
 

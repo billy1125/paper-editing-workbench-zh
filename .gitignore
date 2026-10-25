@@ -58,4 +58,4 @@ working-papers/*
 
 # 風格素材為私人內容（含蒸餾摘要）；只保留通用預設
 writing-style/*
-!writing-style/style-defaults.md
+!writing-style/personal-writing-style.md

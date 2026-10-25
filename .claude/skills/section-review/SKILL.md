@@ -14,7 +14,7 @@ description: 當使用者已逐段編修到一個階段，指定一個文章範�
 
 ## 開始前
 
-1. 讀 `working-papers/<paper>/style-guide.md`，以它為整體一致性的基準；若不存在，以 `writing-style/style-defaults.md` 的預設基準為準。
+1. 讀 `working-papers/<paper>/style-guide.md`，以它為整體一致性的基準；若不存在，以 `writing-style/personal-writing-style.md` 的預設基準為準。
 2. 確認範圍邊界（哪個章節檔、從哪到哪；全文指 `Basic Information.md` 的 `chapters` 所列的全部章節檔），以及使用者特別在意的面向（若有）。
 
 ## 審查面向（跨段落層級）

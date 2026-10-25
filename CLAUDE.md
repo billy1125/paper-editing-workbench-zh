@@ -10,15 +10,15 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 > **這不是程式碼專案**：本 repo 沒有 build／test／lint 流程，也沒有應用程式可執行。工作產物是各大章節的 Markdown 章節檔與 `revisions/` 留底；唯一的「指令」是 §8 的 conda／Pandoc 環境驗證與各 skill 內附的抽取／轉檔腳本。請勿去找不存在的測試或建置指令。查證引用透過 `.mcp.json` 設定的 **Semantic Scholar MCP server**（工具前綴 `mcp__semantic-scholar__*`），見 §4。
 
-> **作用中論文（active paper）**：所有編修工作檔——各大章節檔、`Manuscript.md`、`Basic Information.md`、`progress.md`、`reference.md`、`drafts/`、`revisions/`、`target-journal-samples/`、`style-guide.md`——都位於**某一篇論文的資料夾 `working-papers/<title>/` 內**。動手前先確認正在編修哪一篇；不明確時先問一句。本檔與各 skill 提到這些檔名時，除非另有標明，一律指**作用中論文資料夾內**的同名檔。**編修以大章節檔為工作檔**：章節清單與檔名由作者設定在該篇 `Basic Information.md` 的 `chapters`；`Manuscript.md` 是過去所有手稿的集中檔，只作素材與對照來源，不是編修工作檔（見 §5）。跨論文共用的是根目錄 `writing-style/`，內含三個各自獨立、可分別調整的區塊：**個人筆法** `personal-voice/`、**學術中文原則** `academic-principles/`、**通用預設** `style-defaults.md`（見 §3）。另外，各篇資料夾內的 `papers/`（`working-papers/<title>/papers/`）是使用者存放該篇**參考文獻**原文的地方，內分 `pdf/`、`md/`，只供查證、不編修。
+> **作用中論文（active paper）**：所有編修工作檔——各大章節檔、`Manuscript.md`、`Basic Information.md`、`progress.md`、`reference.md`、`drafts/`、`revisions/`、`style-guide.md`——都位於**某一篇論文的資料夾 `working-papers/<title>/` 內**。動手前先確認正在編修哪一篇；不明確時先問一句。本檔與各 skill 提到這些檔名時，除非另有標明，一律指**作用中論文資料夾內**的同名檔。**編修以大章節檔為工作檔**：章節清單與檔名由作者設定在該篇 `Basic Information.md` 的 `chapters`；`Manuscript.md` 是過去所有手稿的集中檔，只作素材與對照來源，不是編修工作檔（見 §5）。跨論文共用的是根目錄 `writing-style/personal-writing-style.md`（個人寫作風格，見 §3）。另外，各篇資料夾內的 `papers/`（`working-papers/<title>/papers/`）是使用者存放該篇**參考文獻**原文的地方，內分 `pdf/`、`md/`，只供查證、不編修。
 
 ---
 
 ## 0. 中文風格基本設定（預設基準）
 
-**預設基準已抽出至 [`writing-style/style-defaults.md`](writing-style/style-defaults.md)**（資管 IS 中文論文通用預設：語域、句式、術語，以及隨期刊而異的用語用字／人稱／標點／引用格式）。
+**預設基準已抽出至 [`writing-style/personal-writing-style.md`](writing-style/personal-writing-style.md)**（資管 IS 中文論文通用預設：語域、句式、術語，以及隨期刊而異的用語用字／人稱／標點／引用格式）。
 
-**優先順序（記住這條即可）：** 編修先以 `style-defaults.md` 為準；**一旦作用中論文的 `working-papers/<title>/style-guide.md` 產生，即改以它為準，衝突時該篇 `style-guide.md` 優先。** 執行 `passage-revision`／`section-review`／`personal-voice-calibration` 前，先讀該篇 `style-guide.md`；不存在時以 `style-defaults.md` 為 fallback。`style-guide.md` 由 `personal-voice-calibration` 綜合三個共用風格區塊（個人筆法摘要、學術原則摘要、通用預設）與該篇期刊範文產生（見 §3）。
+**優先順序（記住這條即可）：** 先依作用中論文的 `working-papers/<title>/style-guide.md`，再依 `writing-style/personal-writing-style.md`；衝突時該篇 `style-guide.md` 優先。`style-guide.md` 是該篇投稿期刊的寫作指引，由使用者設定；空白時略過，直接依 `personal-writing-style.md`。執行 `passage-revision`／`section-review` 前，先讀這兩份檔（見 §3）。
 
 ---
 
@@ -45,20 +45,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## 3. 參考素材（風格）
 
-編修品質取決於參考素材。素材分為**跨論文共用**（根目錄 `writing-style/`，三個各自獨立的區塊）與**每篇論文獨立**（`working-papers/<title>/` 內）兩層。**開始編修某篇論文前，若共用區塊的摘要尚未產生或該篇資料夾是空的，請主動提示使用者提供（見下方 onboarding）。**
+風格依據分為**跨論文共用**與**每篇論文獨立**兩層，兩份都由使用者自行編輯，沒有對應的 skill。
 
 | 位置 | 放什麼 | 層級 | 由誰維護／用途 |
 |---|---|---|---|
-| `writing-style/personal-voice/sources/` | 使用者**自己寫過**、已發表或滿意的中文論文／段落 | **跨論文共用** | 使用者放檔；`personal-voice-calibration` 蒸餾成 `personal-voice.md`（筆法 DNA） |
-| `writing-style/academic-principles/sources/` | 使用者**蒐集／整理**的學術中文寫作原則（教材、期刊指南、詞彙表；非本人文章） | **跨論文共用** | 使用者放檔；`academic-principles-calibration` 萃取成 `academic-principles.md`（規則摘要） |
-| `writing-style/style-defaults.md` | 通用預設風格基準（語域、句式、格式） | **跨論文共用** | **使用者自行編輯的範本**（無 skill；見 §0） |
-| `working-papers/<title>/target-journal-samples/` | 該篇目標期刊的範例文章（1–5 篇佳） | **每篇獨立** | 使用者放檔；對齊該期刊的正式度、句構、慣用表達 |
-| `working-papers/<title>/style-guide.md` | **由 AI 維護**，綜合上面四者的該篇風格指引 | **每篇獨立** | `personal-voice-calibration` 產生；該篇每次編修都依此為準 |
-
-**首次使用引導（onboarding）：** 當 `writing-style/personal-voice/personal-voice.md` 或 `writing-style/academic-principles/academic-principles.md` **尚不存在**（或該篇 `target-journal-samples/` 為空）時，主動以下列標準說法提示使用者設定三個共用區塊；沒有也可先用 `style-defaults.md` 起步。
-> 要讓編修更貼近你，建議先設定三個共用風格區塊：(1) **個人筆法**——把你自己寫的中文論文放進 `writing-style/personal-voice/sources/`，我用 `personal-voice-calibration` 蒸餾成你的筆法摘要；(2) **學術中文原則**——把你蒐集或整理的寫作規則／教材／詞彙表放進 `writing-style/academic-principles/sources/`，我用 `academic-principles-calibration` 萃取成規則摘要；(3) **通用預設**——`writing-style/style-defaults.md` 是可編輯範本，你可直接改成自己的規範。另外，這篇的目標期刊範文請放 `working-papers/<這篇>/target-journal-samples/`。沒有也能先開始，但建議至少提供目標期刊範文。
-
-**定期更新：** 使用者在 `personal-voice/sources/` 或 `target-journal-samples/` 新增或更換素材後，執行 `personal-voice-calibration` 更新摘要與該篇 `style-guide.md`；在 `academic-principles/sources/` 有變動後，執行 `academic-principles-calibration` 更新規則摘要。也可隨時說「重新校準風格」「更新學術原則」來觸發。
+| `working-papers/<title>/style-guide.md` | 該篇投稿期刊的寫作指引（可來自期刊的作者須知） | **每篇獨立** | 使用者設定；空白時略過。優先於下一列 |
+| `writing-style/personal-writing-style.md` | 個人寫作風格與通用預設（語域、句式、格式、論述架構、個人筆法） | **跨論文共用** | 使用者自行編輯（見 §0） |
 
 ---
 
@@ -72,10 +64,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 | Skill | 一句話用途 |
 |---|---|
-| `personal-voice-calibration` | 讀共用個人筆法素材（＋學術原則摘要、通用預設、該篇期刊範文），蒸餾 `personal-voice.md` 並產生／更新該篇 `style-guide.md`（原 `style-calibration`） |
-| `academic-principles-calibration` | 讀使用者蒐集／整理的學術中文原則文件，萃取成共用規則摘要 `academic-principles.md` |
 | `passage-revision` — 最常用 | 逐段校修，依該篇 `style-guide.md` 給 ≤5 版本供挑選、可回退 |
 | `section-review` | 指定一個範圍（一節／數段／全文）做整體彙整審閱，給修改方向而非直接大改 |
+| `writing-style-alignment` | 依 `writing-style/personal-writing-style.md` 檢查文字是否對齊使用者的寫作風格；使用者可選「建議」（只列出，預設）或「直接改」；`editing-assistant` 以預先載入的方式在時間點 B、C、D 使用 |
 | `argument-review` | 檢查論證邏輯、研究缺口與研究模型的一致性，產出修訂稿；不查證引用，引用事項交給 `citation-source-verification` |
 
 **支援性**
@@ -92,7 +83,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ### Agent 與 hooks
 
-`.claude/agents/editing-assistant.md` 是**只讀不寫**的流程提醒 Agent（工具只有 Read／Grep／Glob），在下列時間點由主對話呼叫，回報「動手前必須處理／連動提醒／待結案／建議 skill」四區。它不改檔、不取代上表的 skill；結果由主對話轉述給使用者。
+`.claude/agents/editing-assistant.md` 是**只讀不寫**的流程提醒 Agent（工具只有 Read／Grep／Glob），在下列時間點由主對話呼叫，回報「動手前必須處理／連動提醒／待結案／建議 skill」四區；時間點 B、C、D 另加【風格對齊】區（frontmatter 以 `skills` 預先載入 `writing-style-alignment`）。它不改檔、不取代上表的 skill；結果由主對話轉述給使用者。
 
 | 時間點 | 何時呼叫 |
 |---|---|
@@ -132,7 +123,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ### 首次設定：為一篇論文建立資料夾與工作檔
 
-只在**開新論文**時做一次（複製 `_TEMPLATE/` → 在 `Basic Information.md` 設定大章節 → 放來源 → `source-document-extraction` 把過去手稿集中到 `Manuscript.md` → 建 `progress.md` → 選配 `personal-voice-calibration`）。**完整步驟與範例指令見 [`docs/NEW-PAPER.md`](docs/NEW-PAPER.md)。**
+只在**開新論文**時做一次（複製 `_TEMPLATE/` → 在 `Basic Information.md` 設定大章節 → 放來源 → `source-document-extraction` 把過去手稿集中到 `Manuscript.md` → 建 `progress.md`）。**完整步驟與範例指令見 [`docs/NEW-PAPER.md`](docs/NEW-PAPER.md)。**
 
 ### 大章節檔與 `Manuscript.md`
 
@@ -146,19 +137,20 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 先**確認作用中論文**（在哪個 `working-papers/<title>/`）與**要改的章節檔**；以下章節檔、`revisions/`、`progress.md` 均指該篇資料夾內的檔。
 
 0. **切換／確認作用中論文時必做的複習（switch-in ritual）**：每當 (a) 一個 session **第一次動手**，或 (b) 使用者**切換到另一篇** `working-papers/<title>/` 時，在下任何 Edit 前，必須先重新載入該篇專屬情境——**這些規則不得跨篇沿用**（縮寫清單、列舉法、術語譯名、「本研究／本文」的用法等每篇可能不同）：
-   1. 讀該篇 `style-guide.md`，**特別是 §9 使用者手動補充／該篇新訂規則**。
+   1. 讀該篇 `style-guide.md`（投稿期刊的寫作指引；空白時略過）與 `writing-style/personal-writing-style.md`。
    2. 讀該篇 `Basic Information.md` 的 `chapters` 與 `progress.md`，確認章節檔清單、各章狀態與待辦。
    3. 掃最近 2–3 個該篇 `revisions/`，掌握最近決策與尚未處理的「⚠️ 觀察」。
-   4. 輸出一行確認再開始，例如：`已載入 <title>：style-guide（§9 規則 N 條）＋progress＋近 3 筆 revisions`。
+   4. 輸出一行確認再開始，例如：`已載入 <title>：style-guide（已設定／空白）＋personal-writing-style＋progress＋近 3 筆 revisions`。
    5. 呼叫 `editing-assistant`（時間點 A），轉述它回報的未結案事項與 `todo.md`／`consistency-map.md` 狀態。
    （不確定使用者指的是哪一篇時，先問一句，見 §7、本檔開頭「作用中論文」說明。）
 1. **確認範圍與方向**：使用者指出哪個章節檔的哪一部分要改，以及方向（更流程/更正式／更簡潔／更強調貢獻／更口語等，可能同時有兩個以上的方向）。方向不明時，先問一句再動手。
-2. **動手前先重讀 live 文字**：以該章節檔**當下內容**為準再產生建議或下 Edit。使用者常在回合之間自行手改稿件（採用某版後再微調、或改回別的措辭），`revisions/` 的快照可能落後於 live；**務必先 Read 目標段落、確認 old_string 對得上**，不要拿舊文字直接替換。產生建議前呼叫 `editing-assistant`（時間點 B），把該段的標記、未結案 ⚠️ 與連動位置告訴使用者。
+2. **動手前先重讀 live 文字**：以該章節檔**當下內容**為準再產生建議或下 Edit。使用者常在回合之間自行手改稿件（採用某版後再微調、或改回別的措辭），`revisions/` 的快照可能落後於 live；**務必先 Read 目標段落、確認 old_string 對得上**，不要拿舊文字直接替換。產生建議前呼叫 `editing-assistant`（時間點 B），把該段的標記、未結案 ⚠️、連動位置與【風格對齊】結果告訴使用者；產生版本時一併處理【風格對齊】列出的不符合處。
 3. **產生建議**：
    - 單段 → 用 `passage-revision`，給 ≤5 版本。**基本原則：一律多版本（≥2）＋附一句「我的建議」，不得因連續／批次／逐段而退成單一版；見該 skill 產出規則。**
    - 一個範圍的整體彙整 → 用 `section-review`，給方向選項（此 skill 給「方向」不給逐段版本；要版本回到 `passage-revision`）。
+   - 例外：使用者呼叫 `writing-style-alignment` 並指定「直接改」時，每段只改一版、不給多版本，仍要留底。
 4. **使用者挑選或微調**：使用者指定採用哪一版（或要求再改）。
-5. **替換並更新進度**：將選定版本替換回該篇**對應章節檔**的對應位置，在該篇 `revisions/` 依下方「編修歷程紀錄格式」存一筆（確保可回退），並更新該篇 `progress.md` 對應節狀態。完成後呼叫 `editing-assistant`（時間點 C）檢查留底、進度、查證結果表、書目與 `todo.md`；有新的 ⚠️ 時用 `todo-consolidation` 更新 `todo.md`。
+5. **替換並更新進度**：將選定版本替換回該篇**對應章節檔**的對應位置，在該篇 `revisions/` 依下方「編修歷程紀錄格式」存一筆（確保可回退），並更新該篇 `progress.md` 對應節狀態。完成後呼叫 `editing-assistant`（時間點 C）檢查留底、進度、查證結果表、書目、`todo.md` 與風格對齊；有新的 ⚠️ 時用 `todo-consolidation` 更新 `todo.md`。
 
 一章告一段落時呼叫 `editing-assistant`（時間點 D）；投稿前呼叫時間點 E。
 
@@ -184,23 +176,19 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## 7. 目錄結構
 
-每篇論文一夾，所有編修工作檔都在各自 `working-papers/<title>/` 內；跨論文共用的只有根目錄 `writing-style/`（風格素材）。各篇的參考文獻原文放在該篇的 `papers/`（`working-papers/<title>/papers/`，內分 `pdf/`、`md/`，不編修）。**實際論文夾（含其中的 `papers/`）與 `writing-style/` 內兩個 `sources/` 及蒸餾摘要是 git-ignored 的私人內容**（見 `.gitignore`）——只有 `_TEMPLATE/`、`style-defaults.md` 與各 README 進版控；使用者自己的稿件與筆法素材只留本機、不會出現在 `git status`，屬預期行為。
+每篇論文一夾，所有編修工作檔都在各自 `working-papers/<title>/` 內；跨論文共用的只有根目錄 `writing-style/`（風格素材）。各篇的參考文獻原文放在該篇的 `papers/`（`working-papers/<title>/papers/`，內分 `pdf/`、`md/`，不編修）。**實際論文夾（含其中的 `papers/`）是 git-ignored 的私人內容**（見 `.gitignore`）——只有 `_TEMPLATE/`、`personal-writing-style.md` 與各 README 進版控；使用者自己的稿件只留本機、不會出現在 `git status`，屬預期行為。
 
 ```
 Paperforger-ZH/
 ├── CLAUDE.md                 # 本檔，專案主指引（跨所有論文）
 ├── response-guide.md         # 回應指引（對話回覆的寫法；可編輯範本，由本檔匯入）
 ├── docs/                     # SETUP.md（環境需求與 pandoc 疑難排解，見 §8）、NEW-PAPER.md（開新論文流程）
-├── .claude/skills/           # 12 個編修 skill（跨論文共用，各含 SKILL.md）
+├── .claude/skills/           # 11 個編修 skill（跨論文共用，各含 SKILL.md）
 │                             #   其中 source-document-extraction 為 🔗 外部可攜 skill，勿任意修改（見 §4）
 ├── .claude/agents/           # editing-assistant.md：只讀的流程提醒 Agent（見 §4「Agent 與 hooks」）
 ├── .claude/hooks/            # SessionStart、PostToolUse 提醒腳本，由 .claude/settings.json 掛載
-├── writing-style/            # 【跨論文共用】風格素材（三區塊）
-│   ├── style-defaults.md         #   通用預設（可編輯範本；見 §0；進版控）
-│   ├── personal-voice/           #   個人筆法：sources/（放自己文章）＋ personal-voice.md 摘要
-│   │                             #     （git-ignored 私人；僅 README＋sources/.gitkeep 進版控）
-│   └── academic-principles/      #   學術中文原則：sources/（放蒐集的規則）＋ academic-principles.md 摘要
-│                                 #     （git-ignored 私人；僅 README＋sources/.gitkeep 進版控）
+├── writing-style/            # 【跨論文共用】
+│   └── personal-writing-style.md #   個人寫作風格（使用者自行編輯；見 §0、§3；進版控）
 └── working-papers/           # 【每篇一夾】
     ├── README.md             #   工作區說明（進版控）
     ├── _TEMPLATE/            #   範本骨架：開新論文複製此夾改名（進版控，含 revisions/_format.md）
@@ -208,7 +196,7 @@ Paperforger-ZH/
                               #   Basic Information.md 的 chapters）、Manuscript.md（過去手稿集中檔）、
                               #   Basic Information.md、progress.md、reference.md、style-guide.md、
                               #   todo.md（待辦清單）、consistency-map.md（連動對照表）、
-                              #   target-journal-samples/、drafts/、revisions/、
+                              #   drafts/、revisions/、
                               #   papers/（參考文獻原文，內分 pdf/、md/，供 citation-source-verification 查證；不編修）
 ```
 

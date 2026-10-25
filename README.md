@@ -22,13 +22,13 @@ Paperforger-ZH helps Information Systems (IS/MIS) researchers bring the **Chines
 - **專案性質 Side project**：這是作者**個人研究與測試用的 side project**，內容多為**與 AI 協作產生的初稿**，**測試尚未完整**、可能含錯誤或 bug，並非正式、穩定或經完整驗證的產品。
 - **不保證正確 No warranty**：AI 的修改建議、引用查證回填的 metadata（來自 Semantic Scholar：標題／作者／年份／DOI／venue），以及一致性掃描結果**皆不保證正確或完整**。**採用任何一版前請自行檢查**；每次採用都會在 `revisions/` 留底，可隨時回退。作者不對任何因使用本專案而產生的後果負責（一切依 [MIT 授權](LICENSE) 之「AS IS」免責條款）。
 - **學術倫理 Academic integrity**：AI 的修改**僅供輔助**；最終文字、研究主張、數據與投稿內容由**作者負全責**，並請遵守你所屬機構與期刊的學術誠信規範。
-- **版權與素材 Copyright & materials**：你的稿件仍屬你自己；放入 `target-journal-samples/`、`drafts/` 的第三方期刊文章須為你**有合法權限取得**者，僅供風格對齊之個人研究用途，**勿違反出版商服務條款（ToS）**。
+- **版權與素材 Copyright & materials**：你的稿件仍屬你自己；放入 `drafts/` 的第三方期刊文章須為你**有合法權限取得**者，僅供風格對齊之個人研究用途，**勿違反出版商服務條款（ToS）**。
 - **使用者自負責任 Use at your own risk.**
 
 ## ✨ 特色 / Features
 
 - **多論文佈局 / Multi-paper layout**：每篇論文各自一個 `working-papers/<title>/`，工作檔互不干擾。
-- **風格對齊 / Style calibration**：三個共用風格區塊（個人筆法、學術中文原則、通用預設）＋每篇目標期刊範文，產生該篇專屬 `style-guide.md`。
+- **風格對齊 / Style calibration**：先依該篇 `style-guide.md`（投稿期刊的寫作指引，由你設定，空白則略過），再依共用的 `writing-style/personal-writing-style.md`（個人寫作風格）。
 - **多版本校修 / Multi-version revision**：逐段給 ≤5 個可挑選、可回退的改法，不擅自大改，並提供「最小改動 vs 論述加厚」的密度選擇。
 - **可回退 / Reversible**：每次採用的版本都在該篇 `revisions/` 留底。
 - **引用查證 / Citation verification**：以 **Semantic Scholar MCP** 查證補齊 APA 書目，不憑記憶捏造。
@@ -40,10 +40,9 @@ Paperforger-ZH helps Information Systems (IS/MIS) researchers bring the **Chines
 
 | Skill | 用途 |
 |---|---|
-| `personal-voice-calibration` | 從你本人的文章蒸餾個人筆法摘要，並產生該篇 `style-guide.md` |
-| `academic-principles-calibration` | 從你蒐集／整理的學術中文原則文件萃取共用規則摘要 |
 | `passage-revision` | 逐段中文校修，多版本供挑選（最常用） |
 | `section-review` | 一個範圍的整體彙整審閱，給修改方向 |
+| `writing-style-alignment` | 依 `writing-style/personal-writing-style.md` 檢查文字是否對齊你的寫作風格；可選「建議」（只列出）或「直接改」；`editing-assistant` 也會用它 |
 | `argument-review` | 檢查論證邏輯、研究缺口與研究模型的一致性，產出修訂稿（不查證引用） |
 | `source-document-extraction` | 從 `drafts/` 的 PDF／Word 抽出文字，集中到過去手稿的集中檔 `Manuscript.md` |
 | `citation-reference-management` | 引用一致性檢查、Semantic Scholar 查證補齊書目 |
@@ -61,13 +60,13 @@ Paperforger-ZH helps Information Systems (IS/MIS) researchers bring the **Chines
 
 | 時間點 | 何時用 | 檢查什麼 | 你可以這樣說 |
 |---|---|---|---|
-| A 開工 | session 第一次動手、切換到另一篇 | `style-guide.md` 的專屬規則、`chapters` 所列章節檔是否存在、`progress.md`、`todo.md` 未解決項、近 3 筆 `revisions/` 的 ⚠️、`todo.md` 是否過時 | 「開工前檢查一下」 |
-| B 改段前 | 動手改某段之前 | 段落內的文內標記、`revisions/` 中這段的 ⚠️、`todo.md` 中落在這段的項目、`consistency-map.md` 記錄的跨章連動 | 「改這段前要注意什麼」 |
-| C 採用後 | 採用版本、替換回章節檔之後 | 有沒有留底、`progress.md` 有沒有更新、查證結果表的文句是否還在正文、引用是否都在參考文獻與 `reference.md` | 「這段替換完了，幫我檢查」 |
-| D 章節收尾 | 一章告一段落 | 依 `consistency-map.md` 逐列比對各章寫法、統計文內標記、列出不納入投稿正文的節 | 「這章收尾檢查」 |
+| A 開工 | session 第一次動手、切換到另一篇 | `style-guide.md` 是否已設定、`personal-writing-style.md`、`chapters` 所列章節檔是否存在、`progress.md`、`todo.md` 未解決項、近 3 筆 `revisions/` 的 ⚠️、`todo.md` 是否過時 | 「開工前檢查一下」 |
+| B 改段前 | 動手改某段之前 | 段落內的文內標記、`revisions/` 中這段的 ⚠️、`todo.md` 中落在這段的項目、`consistency-map.md` 記錄的跨章連動、風格對齊 | 「改這段前要注意什麼」 |
+| C 採用後 | 採用版本、替換回章節檔之後 | 有沒有留底、`progress.md` 有沒有更新、查證結果表的文句是否還在正文、引用是否都在參考文獻與 `reference.md`、風格對齊 | 「這段替換完了，幫我檢查」 |
+| D 章節收尾 | 一章告一段落 | 依 `consistency-map.md` 逐列比對各章寫法、統計文內標記、列出不納入投稿正文的節、整章風格對齊 | 「這章收尾檢查」 |
 | E 投稿前 | 匯出投稿版之前 | 匿名化（作者自引與作者資訊）、全文剩餘標記、不納入投稿正文的節、摘要與題目的待辦、投稿前處理與待決定事項 | 「投稿前檢查」 |
 
-回報固定分成四區：**動手前必須處理**、**連動提醒**、**待結案**、**建議 skill**。每項附檔名與行號，每區最多 5 項，找不到依據的不寫。
+回報固定分成四區：**動手前必須處理**、**連動提醒**、**待結案**、**建議 skill**；時間點 B、C、D 另加**風格對齊**區（Agent 在 frontmatter 以 `skills` 預先載入 `writing-style-alignment`）。每項附檔名與行號，每區最多 5 項，找不到依據的不寫。
 
 ### Hooks：自動提醒
 
@@ -95,7 +94,7 @@ conda run -n research python -c "import fitz, pdfplumber, pymupdf4llm, docx, mam
 2. 填 `Basic Information.md`（標題、作者、摘要、關鍵字、**目標期刊**），並在其中的 `chapters` **設定大章節**。範本建議的大綱是 `Introduction.md`、`Literature Review.md`、`Research Method.md`、`Data Analysis.md`、`Results.md`、`Discussion and Conclusion.md`；日常編修以這些章節檔為工作檔。
 3. 把原始論文（`.docx`／`.pdf`）放進該篇 `drafts/`。
 4. 請 Claude 用 `source-document-extraction` 抽出正文，集中到該篇 `Manuscript.md`（過去所有手稿的集中檔，供取材與對照，不是編修工作檔）。
-5. （建議）設定共用風格區塊：把自己的文章放 `writing-style/personal-voice/sources/`、蒐集的寫作原則放 `writing-style/academic-principles/sources/`、把目標期刊範文放該篇 `target-journal-samples/`，請 Claude 執行 `personal-voice-calibration`（與 `academic-principles-calibration`）產生 `style-guide.md`。
+5. （建議）設定風格：在 `writing-style/personal-writing-style.md` 編輯你的寫作風格；有投稿期刊的寫作指引時，寫進該篇 `style-guide.md`。
 6. 開始逐段編修：指出段落與方向，用 `passage-revision` 挑版本；定稿前用 `final-consistency-sweep`、匯出用 `markdown-to-word`。
 
 完整步驟見 **[`docs/NEW-PAPER.md`](docs/NEW-PAPER.md)**。
@@ -109,8 +108,7 @@ conda run -n research python -c "import fitz, pdfplumber, pymupdf4llm, docx, mam
 | **切換／確認作用中論文** | 「切到 `<論文名>`」「現在編修的是哪一篇？」 | Claude 會**重新複習該篇** `style-guide.md`（含專屬規則）、`progress.md` 與近期 `revisions/`，並回一行確認後才動手 |
 | 逐段潤稿（最常用） | 「這段改得更正式／更簡潔／更強調貢獻」「給我最小改動與論述加厚兩版」 | `passage-revision`（≤5 版供挑選，可回退） |
 | 整節彙整審閱 | 「這一節整體看一下」「給我整體修改方向」 | `section-review` |
-| 校準個人筆法／更新風格 | 「重新校準風格」「更新我的筆法」 | `personal-voice-calibration`（更新該篇 `style-guide.md`） |
-| 更新學術中文原則 | 「更新學術中文原則」「整理我蒐集的寫作規則」 | `academic-principles-calibration` |
+| 對齊寫作風格 | 「這段對齊我的風格」「檢查這章的寫作風格」「這段像不像我寫的」「依我的寫作風格直接改」 | `writing-style-alignment`（預設「建議」只列出；說「直接改」才改稿，並留底） |
 | 抽取來源論文正文 | 「把 `drafts/` 的 PDF／Word 抽成 `Manuscript.md`」 | `source-document-extraction` |
 | 引用一致性／補書目 | 「檢查引用一致性」「用 Semantic Scholar 補齊書目」 | `citation-reference-management` |
 | 查證引用／補引證 | 「這句的引用對不對」「幫這段找引用」「這篇文獻有沒有講這個」 | `citation-source-verification`（只依 `working-papers/<論文>/papers/` 的原文；沒有原文會先請你提供） |
@@ -128,13 +126,11 @@ conda run -n research python -c "import fitz, pdfplumber, pymupdf4llm, docx, mam
 ```
 ├── CLAUDE.md              # AI 主指引（跨所有論文）
 ├── docs/                  # SETUP.md（環境）、NEW-PAPER.md（開新論文）
-├── .claude/skills/        # 12 個編修 skill（共用）
+├── .claude/skills/        # 11 個編修 skill（共用）
 ├── .claude/agents/        # editing-assistant：只讀的流程提醒 Agent
 ├── .claude/hooks/         # session 開始、改章節檔後的提醒腳本
-├── writing-style/           # 【共用】三個風格區塊
-│   ├── style-defaults.md    #   通用預設（可編輯範本，進版控）
-│   ├── personal-voice/      #   個人筆法：sources/＋personal-voice.md（git-ignored 私人；僅 README 進版控）
-│   └── academic-principles/ #   學術中文原則：sources/＋academic-principles.md（git-ignored 私人；僅 README 進版控）
+├── writing-style/           # 【共用】
+│   └── personal-writing-style.md    #   個人寫作風格（你自行編輯，進版控）
 └── working-papers/
     ├── README.md         # 工作區說明（進版控）
     ├── _TEMPLATE/         # 新論文骨架，複製改名即可（進版控）

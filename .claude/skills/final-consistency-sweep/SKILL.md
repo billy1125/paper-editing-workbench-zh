@@ -15,7 +15,7 @@ description: 論文定稿或匯出 Word 前的最後一關，對各大章節檔�
 
 ## 開始前
 
-1. 讀 `working-papers/<paper>/style-guide.md`，以它為一致性與用語用字的基準；若不存在，以 `writing-style/style-defaults.md` 為準。
+1. 讀 `working-papers/<paper>/style-guide.md`，以它為一致性與用語用字的基準；若不存在，以 `writing-style/personal-writing-style.md` 為準。
 2. 確認掃描範圍（整份或指定章節）。整份指該篇 `Basic Information.md` 的 `chapters` 所列的全部章節檔，依序掃描，並檢查跨章節的一致性；`Manuscript.md`（過去手稿集中檔）不在掃描範圍。
 3. 以章節檔的 **live 內容**為準（使用者可能在回合間自行手改）。
 
