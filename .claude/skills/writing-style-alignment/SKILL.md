@@ -1,6 +1,6 @@
 ---
 name: writing-style-alignment
-description: 依 writing-style/personal-writing-style.md 檢查作用中論文章節檔的文字是否對齊使用者的寫作風格，列出不符合處（位置、原文片段、依據節號）與改寫後消失的作者慣用寫法。有兩種模式：「建議」只列出不改稿（預設），「直接改」依不符合處修改章節檔並在 revisions/ 留底。editing-assistant 在時間點 B、C、D 以預先載入的方式使用本 skill，此時一律只回報。當使用者說「這段對齊我的風格」「檢查這章的寫作風格」「這段像不像我寫的」「依我的寫作風格直接改」時使用。只處理中文語言層面，不修改研究邏輯、主張、數據與引用。
+description: 依 writing-style/personal-writing-style.md 檢查作用中論文章節檔的文字是否對齊使用者的寫作風格，列出不符合處（位置、原文片段、依據節號）與改寫後消失的作者慣用寫法。有兩種模式：「建議」只列出不改稿（預設），「直接改」依不符合處修改章節檔並在 revisions/ 留底。editing-assistant 的檢查項目 B、C、D 以預先載入的方式使用本 skill，此時一律只回報。當使用者說「這段對齊我的風格」「檢查這章的寫作風格」「這段像不像我寫的」「依我的寫作風格直接改」時使用。只處理中文語言層面，不修改研究邏輯、主張、數據與引用。
 ---
 
 # 寫作風格對齊（Writing Style Alignment）
@@ -63,11 +63,11 @@ description: 依 writing-style/personal-writing-style.md 檢查作用中論文�
 
 ## editing-assistant 使用時
 
-- `editing-assistant` 在 frontmatter 以 `skills` 預先載入本 skill，在時間點 B、C、D 照「做法」檢查。
+- `editing-assistant` 在 frontmatter 以 `skills` 預先載入本 skill，使用者要求檢查項目 B、C、D 時照「做法」檢查。
 - 一律只回報，不改稿，也不建議切換到「直接改」。
 - 結果放在回報的【風格對齊】區，最多 5 項；超過時最後一項寫「另有 N 項」。
 
-| 時間點 | 檢查 |
+| 檢查項目 | 檢查 |
 |---|---|
 | B 改段前 | 列出這一段適用的規則，以及目前文字不符合的地方，讓改寫時一併處理 |
 | C 採用後 | 檢查採用的版本：有沒有不符合規則的地方，有沒有丟掉作者的慣用寫法 |

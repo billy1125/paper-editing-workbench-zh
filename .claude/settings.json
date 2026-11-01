@@ -9,17 +9,6 @@
           }
         ]
       }
-    ],
-    "PostToolUse": [
-      {
-        "matcher": "Edit|Write",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/chapter-edit-reminder.sh\""
-          }
-        ]
-      }
     ]
   }
 }

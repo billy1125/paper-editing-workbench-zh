@@ -13,7 +13,7 @@
    - `drafts/` 的原始檔**保留不動**，僅作對照與回溯來源；**不再直接編輯 `drafts/`**。
    - 該 skill 不綁定本專案，落檔位置一律靠 `-o` 指定（**不要留在它預設的 `extracted/`**）；抽完**回報實際輸出路徑**，再接第 4 步建 `progress.md`。上下游與分流規則見 CLAUDE.md §4「接線註記」。
    - 之後「在 Word 改過的稿件要合併回章節檔」屬 `docx-manuscript-sync`，不是這一步。
-4. **建立進度清單 `progress.md`**：在該篇資料夾建一份輕量編修進度表，依 `chapters` 逐章節標狀態（未動／進行中／已定稿），跨 session 一目了然。每次定稿後更新對應節（見 CLAUDE.md §5 日常編修循環最後一步）。
+4. **建立進度清單 `progress.md`**：在該篇資料夾建一份輕量編修進度表，依 `chapters` 逐章節標狀態（未動／進行中／已定稿），跨 session 一目了然。狀態寫在表格，改動內容以條列記在「改動歷程」（見 CLAUDE.md §5 日常編修循環最後一步）。
 5. **（建議）設定風格**：在 `writing-style/personal-writing-style.md` 編輯跨論文共用的寫作風格；有投稿期刊的寫作指引時，寫進該篇 `style-guide.md`（空白時略過，編修直接依 `personal-writing-style.md`）。
-6. **建立連動對照表 `consistency-map.md`**：章節檔有內容後，由主對話依各章現況草擬首版（構面清單、假設編號、模型設定、樣本數、用詞決定與各自的出現位置），作者逐列確認後填「目前定案」。之後 `editing-assistant` 在動手改段落前與章節收尾時據此比對（見 CLAUDE.md §4「Agent 與 hooks」）。
+6. **建立連動對照表 `consistency-map.md`**：章節檔有內容後，由主對話依各章現況草擬首版（構面清單、假設編號、模型設定、樣本數、用詞決定與各自的出現位置），作者逐列確認後填「目前定案」。之後你要求 `editing-assistant` 做改段前或章節收尾檢查時，它會據此比對（見 CLAUDE.md §4「Agent 與 hooks」）。
 7. **（之後隨時）彙整待辦**：各章累積待補事項與 ⚠️ 觀察後，用 `todo-consolidation` 建立或更新 `todo.md`。

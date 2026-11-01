@@ -66,7 +66,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 |---|---|
 | `passage-revision` — 最常用 | 逐段校修，依該篇 `style-guide.md` 給 ≤5 版本供挑選、可回退 |
 | `section-review` | 指定一個範圍（一節／數段／全文）做整體彙整審閱，給修改方向而非直接大改 |
-| `writing-style-alignment` | 依 `writing-style/personal-writing-style.md` 檢查文字是否對齊使用者的寫作風格；使用者可選「建議」（只列出，預設）或「直接改」；`editing-assistant` 以預先載入的方式在時間點 B、C、D 使用 |
+| `writing-style-alignment` | 依 `writing-style/personal-writing-style.md` 檢查文字是否對齊使用者的寫作風格；使用者可選「建議」（只列出，預設）或「直接改」；`editing-assistant` 的檢查項目 B、C、D 以預先載入的方式使用 |
 | `argument-review` | 檢查論證邏輯、研究缺口與研究模型的一致性，產出修訂稿；不查證引用，引用事項交給 `citation-source-verification` |
 
 **支援性**
@@ -83,19 +83,19 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ### Agent 與 hooks
 
-`.claude/agents/editing-assistant.md` 是**只讀不寫**的流程提醒 Agent（工具只有 Read／Grep／Glob），在下列時間點由主對話呼叫，回報「動手前必須處理／連動提醒／待結案／建議 skill」四區；時間點 B、C、D 另加【風格對齊】區（frontmatter 以 `skills` 預先載入 `writing-style-alignment`）。它不改檔、不取代上表的 skill；結果由主對話轉述給使用者。
+`.claude/agents/editing-assistant.md` 是**只讀不寫**的流程提醒 Agent（工具只有 Read／Grep／Glob）。**只在使用者明確要求時呼叫，主對話不得主動呼叫**，它也不是 §5 日常編修循環的步驟。它回報「動手前必須處理／連動提醒／待結案／建議 skill」四區；檢查項目 B、C、D 另加【風格對齊】區（frontmatter 以 `skills` 預先載入 `writing-style-alignment`）。它不改檔、不取代上表的 skill；結果由主對話轉述給使用者。使用者沒指明檢查項目時依下表判斷，判斷不了先問一句。
 
-| 時間點 | 何時呼叫 |
-|---|---|
-| A | session 第一次動手、或切換到另一篇（§5 step 0） |
-| B | 動手改某段前（§5 step 2） |
-| C | 採用版本、替換回章節檔之後（§5 step 5） |
-| D | 一章告一段落 |
-| E | 投稿前，接著跑 `final-consistency-sweep`、`markdown-to-word` |
+| 檢查項目 | 適合何時用 | 使用者可以這樣說 |
+|---|---|---|
+| A | session 第一次動手、或切換到另一篇 | 「開工前檢查一下」 |
+| B | 動手改某段前 | 「改這段前要注意什麼」 |
+| C | 採用版本、替換回章節檔之後 | 「這段替換完了，幫我檢查」 |
+| D | 一章告一段落 | 「這章收尾檢查」 |
+| E | 投稿前，接著跑 `final-consistency-sweep`、`markdown-to-word` | 「投稿前檢查」 |
 
-`.claude/settings.json` 設了兩個 hook，只插入提醒文字、不會自己執行 Agent：SessionStart 提醒呼叫時間點 A；PostToolUse（Edit／Write）在改到該篇 `Basic Information.md` 的 `chapters` 所列章節檔時提醒呼叫時間點 C。腳本在 `.claude/hooks/`。
+`.claude/settings.json` 設了一個 SessionStart hook，只插入提醒文字：先確認作用中論文，完成 §5 step 0。腳本在 `.claude/hooks/`。
 
-每篇另有 `consistency-map.md`（連動對照表），記錄全文共用的事實（構面清單、假設編號、模型設定、樣本數、用詞決定）與出現位置，Agent 在時間點 B、D 據此比對。首版由主對話依各章現況草擬、作者逐列確認；「目前定案」欄只由作者決定。
+每篇另有 `consistency-map.md`（連動對照表），記錄全文共用的事實（構面清單、假設編號、模型設定、樣本數、用詞決定）與出現位置，Agent 在檢查項目 B、D 據此比對。首版由主對話依各章現況草擬、作者逐列確認；「目前定案」欄只由作者決定。
 
 ### 外部（可攜）skill —— 勿任意修改
 
@@ -141,18 +141,15 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
    2. 讀該篇 `Basic Information.md` 的 `chapters` 與 `progress.md`，確認章節檔清單、各章狀態與待辦。
    3. 掃最近 2–3 個該篇 `revisions/`，掌握最近決策與尚未處理的「⚠️ 觀察」。
    4. 輸出一行確認再開始，例如：`已載入 <title>：style-guide（已設定／空白）＋personal-writing-style＋progress＋近 3 筆 revisions`。
-   5. 呼叫 `editing-assistant`（時間點 A），轉述它回報的未結案事項與 `todo.md`／`consistency-map.md` 狀態。
    （不確定使用者指的是哪一篇時，先問一句，見 §7、本檔開頭「作用中論文」說明。）
 1. **確認範圍與方向**：使用者指出哪個章節檔的哪一部分要改，以及方向（更流程/更正式／更簡潔／更強調貢獻／更口語等，可能同時有兩個以上的方向）。方向不明時，先問一句再動手。
-2. **動手前先重讀 live 文字**：以該章節檔**當下內容**為準再產生建議或下 Edit。使用者常在回合之間自行手改稿件（採用某版後再微調、或改回別的措辭），`revisions/` 的快照可能落後於 live；**務必先 Read 目標段落、確認 old_string 對得上**，不要拿舊文字直接替換。產生建議前呼叫 `editing-assistant`（時間點 B），把該段的標記、未結案 ⚠️、連動位置與【風格對齊】結果告訴使用者；產生版本時一併處理【風格對齊】列出的不符合處。
+2. **動手前先重讀 live 文字**：以該章節檔**當下內容**為準再產生建議或下 Edit。使用者常在回合之間自行手改稿件（採用某版後再微調、或改回別的措辭），`revisions/` 的快照可能落後於 live；**務必先 Read 目標段落、確認 old_string 對得上**，不要拿舊文字直接替換。
 3. **產生建議**：
    - 單段 → 用 `passage-revision`，給 ≤5 版本。**基本原則：一律多版本（≥2）＋附一句「我的建議」，不得因連續／批次／逐段而退成單一版；見該 skill 產出規則。**
    - 一個範圍的整體彙整 → 用 `section-review`，給方向選項（此 skill 給「方向」不給逐段版本；要版本回到 `passage-revision`）。
    - 例外：使用者呼叫 `writing-style-alignment` 並指定「直接改」時，每段只改一版、不給多版本，仍要留底。
 4. **使用者挑選或微調**：使用者指定採用哪一版（或要求再改）。
-5. **替換並更新進度**：將選定版本替換回該篇**對應章節檔**的對應位置，在該篇 `revisions/` 依下方「編修歷程紀錄格式」存一筆（確保可回退），並更新該篇 `progress.md` 對應節狀態。完成後呼叫 `editing-assistant`（時間點 C）檢查留底、進度、查證結果表、書目、`todo.md` 與風格對齊；有新的 ⚠️ 時用 `todo-consolidation` 更新 `todo.md`。
-
-一章告一段落時呼叫 `editing-assistant`（時間點 D）；投稿前呼叫時間點 E。
+5. **替換並更新進度**：將選定版本替換回該篇**對應章節檔**的對應位置，在該篇 `revisions/` 依下方「編修歷程紀錄格式」存一筆（確保可回退），並更新該篇 `progress.md`：狀態與一句現況備註寫在表格，改動內容與 ⚠️ 以條列記在「改動歷程」，不寫進表格。有新的 ⚠️ 時用 `todo-consolidation` 更新 `todo.md`。
 
 ### 編修歷程紀錄格式（`working-papers/<title>/revisions/`）
 
@@ -186,7 +183,7 @@ Paperforger-ZH/
 ├── .claude/skills/           # 11 個編修 skill（跨論文共用，各含 SKILL.md）
 │                             #   其中 source-document-extraction 為 🔗 外部可攜 skill，勿任意修改（見 §4）
 ├── .claude/agents/           # editing-assistant.md：只讀的流程提醒 Agent（見 §4「Agent 與 hooks」）
-├── .claude/hooks/            # SessionStart、PostToolUse 提醒腳本，由 .claude/settings.json 掛載
+├── .claude/hooks/            # SessionStart 提醒腳本，由 .claude/settings.json 掛載
 ├── writing-style/            # 【跨論文共用】
 │   └── personal-writing-style.md #   個人寫作風格（使用者自行編輯；見 §0、§3；進版控）
 └── working-papers/           # 【每篇一夾】

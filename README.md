@@ -56,9 +56,9 @@ Paperforger-ZH helps Information Systems (IS/MIS) researchers bring the **Chines
 
 ### `editing-assistant`：流程提醒 Agent
 
-`editing-assistant`（`.claude/agents/editing-assistant.md`）是**只讀不寫**的檢查員，工具只有 Read、Grep、Glob。它在固定時間點讀作用中論文的檔案，回報該注意的事，**不改任何檔案、不替你做決定**，也不取代上面的 skill。真正動手改稿仍由主對話執行對應的 skill。
+`editing-assistant`（`.claude/agents/editing-assistant.md`）是**只讀不寫**的檢查員，工具只有 Read、Grep、Glob。**只有你要求時才會執行**，主對話不會主動呼叫。它讀作用中論文的檔案，回報該注意的事，**不改任何檔案、不替你做決定**，也不取代上面的 skill。真正動手改稿仍由主對話執行對應的 skill。
 
-| 時間點 | 何時用 | 檢查什麼 | 你可以這樣說 |
+| 檢查項目 | 適合何時用 | 檢查什麼 | 你可以這樣說 |
 |---|---|---|---|
 | A 開工 | session 第一次動手、切換到另一篇 | `style-guide.md` 是否已設定、`personal-writing-style.md`、`chapters` 所列章節檔是否存在、`progress.md`、`todo.md` 未解決項、近 3 筆 `revisions/` 的 ⚠️、`todo.md` 是否過時 | 「開工前檢查一下」 |
 | B 改段前 | 動手改某段之前 | 段落內的文內標記、`revisions/` 中這段的 ⚠️、`todo.md` 中落在這段的項目、`consistency-map.md` 記錄的跨章連動、風格對齊 | 「改這段前要注意什麼」 |
@@ -66,19 +66,16 @@ Paperforger-ZH helps Information Systems (IS/MIS) researchers bring the **Chines
 | D 章節收尾 | 一章告一段落 | 依 `consistency-map.md` 逐列比對各章寫法、統計文內標記、列出不納入投稿正文的節、整章風格對齊 | 「這章收尾檢查」 |
 | E 投稿前 | 匯出投稿版之前 | 匿名化（作者自引與作者資訊）、全文剩餘標記、不納入投稿正文的節、摘要與題目的待辦、投稿前處理與待決定事項 | 「投稿前檢查」 |
 
-回報固定分成四區：**動手前必須處理**、**連動提醒**、**待結案**、**建議 skill**；時間點 B、C、D 另加**風格對齊**區（Agent 在 frontmatter 以 `skills` 預先載入 `writing-style-alignment`）。每項附檔名與行號，每區最多 5 項，找不到依據的不寫。
+回報固定分成四區：**動手前必須處理**、**連動提醒**、**待結案**、**建議 skill**；檢查項目 B、C、D 另加**風格對齊**區（Agent 在 frontmatter 以 `skills` 預先載入 `writing-style-alignment`）。每項附檔名與行號，每區最多 5 項，找不到依據的不寫。
 
-### Hooks：自動提醒
+### Hook：開工提醒
 
-`.claude/settings.json` 掛了兩個 hook（腳本在 `.claude/hooks/`），**只插入提醒文字，不會自己執行 Agent**：
-
-- **SessionStart**：每次開 session 時，提醒先確認作用中論文，再呼叫時間點 A。
-- **PostToolUse（Edit／Write）**：改到該篇 `Basic Information.md` 的 `chapters` 所列章節檔時，提醒呼叫時間點 C。`_TEMPLATE/` 與章節檔以外的檔案不觸發。
+`.claude/settings.json` 掛了一個 SessionStart hook（腳本在 `.claude/hooks/`），**只插入提醒文字**：每次開 session 時，提醒先確認作用中論文，完成 CLAUDE.md §5 step 0 的複習。
 
 ### 搭配的工作檔
 
 - **`todo.md`**：該篇的待辦清單，由 `todo-consolidation` 彙整與更新。Agent 讀它來列出未解決項目。
-- **`consistency-map.md`**：連動對照表，記錄全文共用的事實（構面清單、假設編號、模型設定、樣本數、用詞決定）與出現位置。Agent 在時間點 B、D 據此比對。首版由主對話依各章現況草擬，「目前定案」欄只由作者決定。
+- **`consistency-map.md`**：連動對照表，記錄全文共用的事實（構面清單、假設編號、模型設定、樣本數、用詞決定）與出現位置。Agent 在檢查項目 B、D 據此比對。首版由主對話依各章現況草擬，「目前定案」欄只由作者決定。
 
 ## 🔧 環境需求 / Requirements
 
@@ -128,7 +125,7 @@ conda run -n research python -c "import fitz, pdfplumber, pymupdf4llm, docx, mam
 ├── docs/                  # SETUP.md（環境）、NEW-PAPER.md（開新論文）
 ├── .claude/skills/        # 11 個編修 skill（共用）
 ├── .claude/agents/        # editing-assistant：只讀的流程提醒 Agent
-├── .claude/hooks/         # session 開始、改章節檔後的提醒腳本
+├── .claude/hooks/         # session 開始的提醒腳本
 ├── writing-style/           # 【共用】
 │   └── personal-writing-style.md    #   個人寫作風格（你自行編輯，進版控）
 └── working-papers/

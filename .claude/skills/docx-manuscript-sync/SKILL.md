@@ -67,7 +67,7 @@ conda run -n research python -c "import mammoth; print('mammoth ok')"
    - **先 Read 章節檔的 live 目標段落**確認 `old_string` 對得上（使用者可能又手改過），再 Edit。
    - 依 `CLAUDE.md` §5「編修歷程紀錄格式」在 `working-papers/<paper>/revisions/` 留一筆
      （檔名如 `YYYY-MM-DD-docx-sync-<段落標記>.md`，記錄四/各塊決定與實際改動），確保可回退。
-   - 更新 `working-papers/<paper>/progress.md` 對應節備註。
+   - 在 `working-papers/<paper>/progress.md` 的「改動歷程」以條列記一筆。
 6. **（選用）重匯 Word 讓外部端同步**：用最終 md 以 `markdown-to-word` 產出，
    輸出到 `working-papers/<paper>/<章節>.docx`（工作匯出檔）；**不覆蓋** `drafts/` 的來源檔（`CLAUDE.md` §7：來源保留不動）。
    ```bash
